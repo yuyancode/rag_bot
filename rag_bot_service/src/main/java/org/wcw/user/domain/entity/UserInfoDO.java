@@ -1,7 +1,10 @@
 package org.wcw.user.domain.entity;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 /**
@@ -12,6 +15,9 @@ import java.time.LocalDateTime;
  * @description: 用户信息实体类
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserInfoDO {
     /**
      * 主键ID

@@ -29,7 +29,7 @@ public class CookieUtils {
      * @param request
      * @return
      */
-    public static String findCookieValueByName(String name, HttpServletRequest request) {
+    public static String findValueByName(String name, HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return null;

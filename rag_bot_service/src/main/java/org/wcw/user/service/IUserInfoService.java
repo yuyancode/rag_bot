@@ -49,7 +49,7 @@ public interface IUserInfoService {
      * 更新用户信息
      * @param modifyUserInfoCommand 用户信息
      */
-    void modifyUserInfo(ModifyUserInfoCommand modifyUserInfoCommand);
+    void updateUserInfo(ModifyUserInfoCommand modifyUserInfoCommand);
 
     /**
      * 删除用户
@@ -71,6 +71,13 @@ public interface IUserInfoService {
     UserInfoResponse login(HttpServletRequest req, HttpServletResponse resp, LoginCommand request);
 
     /**
+     * 获取用户详情信息
+     * @param userId
+     * @return
+     */
+    UserInfoDO getUserById(Long userId);
+
+    /**
      * 登出
      * @param req
      * @param resp
@@ -82,7 +89,7 @@ public interface IUserInfoService {
      * @param request
      * @return
      */
-    UserInfoResponse queryUserDetailInfo(QueryUserDetailInfoRequest request);
+    UserDetailInfoResp queryUserDetailInfo(QueryUserDetailInfoRequest request);
 
     /**
      * 绑定/换绑 邮箱
