@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wcw.chat.mapper.ChatMessageMapper">
+    <resultMap id="BaseResultMap" type="org.wcw.chat.domain.entity.ChatMessageDO">
+        <id column="id" property="id"/>
+        <result column="message_id" property="messageId"/>
+        <result column="memory_id" property="memoryId"/>
+        <result column="role" property="role"/>
+        <result column="content" property="content"/>
+        <result column="enhanced_content" property="enhancedContent"/>
+        <result column="user_tokens" property="userTokens"/>
+        <result column="system_tokens" property="systemTokens"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, message_id, memory_id, role, content, enhanced_content, user_tokens, system_tokens, create_time
+    </sql>
+
+    <insert id="insert">
+        insert into chat_message (message_id, memory_id, role, content, enhanced_content, user_tokens, system_tokens)
+        values (#{record.messageId}, #{record.memoryId}, #{record.role}, #{record.content}, #{record.enhancedContent}, #{record.userTokens}, #{record.systemTokens})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO chat_message (message_id, memory_id, role, content, enhanced_content, user_tokens, system_tokens) VALUES
+        <foreach item="item" index="index" collection="records" separator="," open="(" close=")">
+            (#{item.messageId}, #{item.memoryId}, #{item.role}, #{item.content}, #{item.enhancedContent}, #{item.userTokens}, #{item.systemTokens})
+        </foreach>
+    </insert>
+
+    <select id="selectByMemoryId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM chat_message
+        WHERE memory_id = #{memoryId}
+        ORDER BY create_time ASC
+    </select>
+
+    <select id="selectRecentByMemoryId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM chat_message
+        WHERE memory_id = #{memoryId}
+        ORDER BY create_time DESC
+        LIMIT #{limit}
+    </select>
+
+    <delete id="deleteByMemoryId">
+        DELETE FROM chat_message
+        WHERE memory_id = #{memoryId}
+    </delete>
+
+    <select id="sumTokensByMemoryId" resultType="java.lang.Integer">
+        SELECT COALESCE(SUM(user_tokens), 0)
+        FROM chat_message
+        WHERE memory_id = #{memoryId}
+    </select>
+
+    <!-- 计算系统实际消耗token -->
+    <select id="sumSystemTokensByMemoryId" resultType="java.lang.Integer">
+        SELECT COALESCE(SUM(system_tokens), 0)
+        FROM chat_message
+        WHERE memory_id = #{memoryId}
+    </select>
+
+
+</mapper>
