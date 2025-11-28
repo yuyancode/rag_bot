@@ -18,7 +18,7 @@ public class ContentRetrieverFactory {
     private final EmbeddingStore<TextSegment> embeddingStore;
 
     public EmbeddingStoreContentRetriever createRetriever(String memoryId, String knowledgeId) {
-        if (!StringUtils.hasText(memoryId)) { // 没有memoryId，则返回所有
+        if (!StringUtils.hasText(memoryId)) { // 没有memoryId(是联网搜索)
             return EmbeddingStoreContentRetriever.builder()
                     .embeddingModel(embeddingModel)
                     .embeddingStore(embeddingStore)
@@ -45,7 +45,7 @@ public class ContentRetrieverFactory {
                 .minScore(0.8)
                 .filter(
                         metadataKey("memoryId").isEqualTo(memoryId)
-                                .and(metadataKey("knowledgeLibId").isEqualTo(konwledgeId))
+                                .and(metadataKey("knowledgeLibId").isEqualTo(knowledgeId))
                 )
                 .build();
     }
