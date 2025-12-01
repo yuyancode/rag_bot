@@ -39,6 +39,7 @@ public class AiConfig {
                 .build();
     }
 
+    // 这里有问题，应该使用工厂模式，因为初始化的时候ThreadLocalUtils还没有memoryId和knowledgeLibId，应该根据用户实际信息传入这两个值，生成对应的embeddingStoreIngestor
     @Bean
     public EmbeddingStoreIngestor embeddingStoreIngestor(EmbeddingStore<TextSegment> embeddingStore, EmbeddingModel embeddingModel) {
         DocumentSplitter documentSplitter = DocumentSplitters.recursive(300, 20);
