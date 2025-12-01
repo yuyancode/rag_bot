@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.wcw.chat.ai.assistant.IAssistant.RAGAssistant;
+import org.wcw.chat.ai.assistant.IAssistant.SummarizeAssistant;
 import org.wcw.chat.ai.assistant.IAssistant.WebSearchAssistant;
 import org.wcw.chat.ai.config.ContentRetrieverFactory;
 import org.wcw.chat.ai.config.PersistentChatMemoryStore;
@@ -103,6 +104,13 @@ public class AssistantService {
                         .maxMessages(20)
                         .chatMemoryStore(chatMemoryStore)
                         .build())
+                .build();
+    }
+
+    @Bean
+    public SummarizeAssistant summarizeAssistant() {
+        return AiServices.builder(SummarizeAssistant.class)
+                .chatLanguageModel(chatLanguageModel)
                 .build();
     }
 }

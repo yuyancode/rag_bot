@@ -1,9 +1,9 @@
 package org.wcw.chat.service;
 
 
-import dev.langchain4j.model.chat.request.ChatRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.wcw.chat.domain.vo.request.ChatRequest;
 import org.wcw.chat.domain.vo.response.ChatMessageResponse;
 import org.wcw.chat.domain.vo.response.FileUploadResponse;
 
