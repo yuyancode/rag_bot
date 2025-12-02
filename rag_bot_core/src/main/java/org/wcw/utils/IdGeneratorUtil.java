@@ -64,7 +64,7 @@ public class IdGeneratorUtil {
      *
      * @return 图书ID
      */
-    private static String generateLibId() {
+    public static String generateLibId() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder randomString = new StringBuilder();
         Random random = new Random();

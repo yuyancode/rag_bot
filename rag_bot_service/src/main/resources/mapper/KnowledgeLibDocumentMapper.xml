@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wcw.library.mapper.KnowledgeLibDocumentMapper">
+    <resultMap id="BaseResultMap" type="org.wcw.library.domain.entity.KnowledgeLibDocumentDO">
+        <id column="document_id" property="documentId"/>
+        <id column="knowledge_lib_id" property="knowledgeLibId"/>
+        <result column="document_name" property="documentName"/>
+        <result column="document_desc" property="documentDesc"/>
+        <result column="document_size" property="documentSize"/>
+        <result column="url" property="url"/>
+        <result column="path" property="path"/>
+        <result column="upload_time" property="uploadTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        document_id, knowledge_lib_id, document_name, document_desc, document_size, url, path, upload_time
+    </sql>
+
+    <insert id="insert" parameterType="org.wcw.library.domain.entity.KnowledgeLibDocumentDO">
+            INSERT INTO knowledge_lib_document (document_id, knowledge_lib_id, document_name, document_desc, document_size, url, path) VALUES (#{documentId}, #{knowledgeLibId}, #{documentName}, #{documentDesc}, #{documentSize}, #{url}, #{path})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO knowledge_lib_document (document_id, knowledge_lib_id, document_name, document_desc, document_size, url, path) VALUES
+        <foreach item="item" collection="documents" separator=",">
+            (#{item.documentId}, #{item.knowledgeLibId}, #{item.documentName}, #{item.documentDesc}, #{item.documentSize}, #{item.url}, #{item.path})
+        </foreach>
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM knowledge_lib_document
+        WHERE document_id = #{documentId}
+        AND knowledge_lib_id = #{knowledgeLibId}
+    </select>
+
+    <select id="selectListByKnowledgeLibId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM knowledge_lib_document
+        WHERE knowledge_lib_id = #{knowledgeLibId}
+        ORDER BY upload_time DESC
+    </select>
+
+    <update id="update" parameterType="org.wcw.library.domain.entity.KnowledgeLibDocumentDO">
+        UPDATE knowledge_lib_document
+        <set>
+            <if test="documentName != null">
+                document_name = #{documentName},
+            </if>
+            <if test="documentDesc != null">
+                document_desc = #{documentDesc},
+            </if>
+            <if test="documentSize != null">
+                document_size = #{documentSize},
+            </if>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="path != null">
+                path = #{path},
+            </if>
+            upload_time = NOW()
+        </set>
+        WHERE document_id = #{documentId}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE knowledge_lib_document
+        <set>
+            status = #{status}
+            upload_time = NOW()
+        </set>
+        WHERE document_id = #{documentId}
+        AND knowledge_lib_id = #{knowledgeLibId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM knowledge_lib_document
+        WHERE document_id = #{documentId}
+    </delete>
+
+    <delete id="batchDelete">
+        DELETE FROM knowledge_lib_document
+        WHERE document_id IN
+        <foreach item="documentId" collection="documentIds" separator="," open="(" close=")">
+            #{documentId}
+        </foreach>
+    </delete>
+
+    <select id="selectCountByKnowledgeLibId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM knowledge_lib_document
+        WHERE knowledge_lib_id = #{knowledgeLibId}
+    </select>
+
+</mapper>

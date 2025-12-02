@@ -14,6 +14,7 @@ import org.wcw.chat.mapper.ChatConversationMapper;
 import org.wcw.chat.mapper.ChatMessageMapper;
 import org.wcw.chat.service.IConversationSideBarService;
 import org.wcw.common.Result;
+import org.wcw.common.enums.ChatConversationEnum;
 
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +51,8 @@ public class ConversationSideBarServiceImpl implements IConversationSideBarServi
         String memoryId = UUID.randomUUID().toString();
         Long userId = request.getUserId();
         ChatConversationDO chatConversationDO = ChatConversationDO.builder()
+                .title(NEW_SESSION_TITLE)
+                .status(ChatConversationEnum.NORMAL.getStatus())
                 .memoryId(memoryId)
                 .userId(userId)
                 .build();

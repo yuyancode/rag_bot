@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wcw.library.mapper.KnowledgeLibMapper">
+    <resultMap id="BaseResultMap" type="org.wcw.library.domain.entity.KnowledgeLibDO">
+        <result column="knowledge_lib_id" property="knowledgeLibId"/>
+        <result column="user_id" property="userId"/>
+        <result column="knowledge_lib_name" property="knowledgeLibName"/>
+        <result column="knowledge_lib_desc" property="knowledgeLibDesc"/>
+        <result column="document_count" property="documentCount"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        knowledge_lib_id, user_id, knowledge_lib_name, knowledge_lib_desc, document_count, create_time, update_time
+    </sql>
+
+    <insert id="insert" parameterType="org.wcw.library.domain.entity.KnowledgeLibDO">
+        INSERT INTO knowledge_lib (knowledge_lib_id, user_id, knowledge_lib_name, knowledge_lib_desc, document_count) VALUES (#{knowledgeLibId}, #{userId}, #{knowledgeLibName}, #{knowledgeLibDesc}, #{documentCount})
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM knowledge_lib
+        WHERE knowledge_lib_id = #{knowledgeLibId}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM knowledge_lib
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM knowledge_lib
+        WHERE user_id = #{userId}
+        ORDER BY create_time DESC
+    </select>
+
+    <update id="update" parameterType="org.wcw.library.domain.entity.KnowledgeLibDO">
+        UPDATE knowledge_lib
+        <set>
+            <if test="knowledgeLibName != null">
+                knowledge_lib_name = #{knowledgeLibName},
+            </if>
+            <if test="knowledgeLibDesc != null">
+                knowledge_lib_desc = #{knowledgeLibDesc},
+            </if>
+            <if test="documentCount != null">
+                document_count = #{documentCount},
+            </if>
+        </set>
+        WHERE knowledge_lib_id = #{knowledgeLibId}
+    </update>
+
+    <update id="updateDocumentCount">
+        UPDATE knowledge_lib
+        SET document_count = #{count}
+        WHERE knowledge_lib_id = #{knowledgeLibId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM knowledge_lib
+        WHERE knowledge_lib_id = #{knowledgeLibId}
+    </delete>
+</mapper>
